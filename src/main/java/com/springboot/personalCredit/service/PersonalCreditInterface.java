@@ -1,6 +1,7 @@
 package com.springboot.personalCredit.service;
 
 import com.springboot.personalCredit.document.PersonalCredit;
+import com.springboot.personalCredit.dto.PersonalCreditDto;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,7 +18,8 @@ public interface PersonalCreditInterface {
 	  
 	  public Mono<Void> delete(PersonalCredit enterpriseCredit);
 	  
-//	  public Mono<PersonalCreditDto> saveDto(PersonalCreditDto personalCreditDto);
+	  public Mono<PersonalCreditDto> saveDto(PersonalCreditDto personalCreditDto);
+
 
 
 	

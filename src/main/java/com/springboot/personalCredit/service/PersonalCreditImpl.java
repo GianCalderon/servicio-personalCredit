@@ -3,8 +3,11 @@ package com.springboot.personalCredit.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.springboot.personalCredit.client.PersonalClient;
 import com.springboot.personalCredit.document.PersonalCredit;
+import com.springboot.personalCredit.dto.PersonalCreditDto;
 import com.springboot.personalCredit.repo.PersonalCreditRepo;
+import com.springboot.personalCredit.util.UtilConvert;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -14,6 +17,12 @@ public class PersonalCreditImpl implements PersonalCreditInterface {
 
 	@Autowired
 	PersonalCreditRepo repo;
+	
+	@Autowired
+	UtilConvert convert;
+	
+	@Autowired
+	PersonalClient webCLient;
 	
 	@Override
 	public Flux<PersonalCredit> findAll() {
@@ -53,11 +62,22 @@ public class PersonalCreditImpl implements PersonalCreditInterface {
 		return repo.delete(personalCredit);
 	}
 
-//	@Override
-//	public Mono<PersonalCreditDto> saveDto(PersonalCreditDto personalCreditDto) {
-//		
-//		
-//	}
+	@Override
+	public Mono<PersonalCreditDto> saveDto(PersonalCreditDto personalCreditDto) {
+		
+		return save(convert.convertPersonalCredit(personalCreditDto)).flatMap(sa -> {
+
+			personalCreditDto.getHolders().setIdCuenta(sa.getId());
+			webCLient.save(personalCreditDto.getHolders()).block();
+			
+
+			return Mono.just(personalCreditDto);
+		});
+		
+		
+	}
+
+
 
 		
 	}

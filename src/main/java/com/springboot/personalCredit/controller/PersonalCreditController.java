@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.personalCredit.document.PersonalCredit;
+import com.springboot.personalCredit.dto.PersonalCreditDto;
 import com.springboot.personalCredit.service.PersonalCreditInterface;
 
 import reactor.core.publisher.Flux;
@@ -25,9 +26,9 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/personalCredit")
-public class EnterpriseCreditController {
+public class PersonalCreditController {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(EnterpriseCreditController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PersonalCreditController.class);
 
 
 	  @Autowired
@@ -78,6 +79,16 @@ public class EnterpriseCreditController {
 	    }).defaultIfEmpty(new ResponseEntity<Void>(HttpStatus.NOT_FOUND));
 
 	  }
+	  
+	  @PostMapping("/saveDto")
+		public Mono<ResponseEntity<PersonalCreditDto>> saveDto(@RequestBody PersonalCreditDto personalCreditDto) {
+
+			LOGGER.info(personalCreditDto.toString());
+
+			return service.saveDto(personalCreditDto).map(s -> ResponseEntity.created(URI.create("/api/personalCredit"))
+					.contentType(MediaType.APPLICATION_JSON).body(s));
+
+		}
 	  
 
 }

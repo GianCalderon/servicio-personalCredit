@@ -1,24 +1,17 @@
-package com.springboot.personalCredit.document;
+package com.springboot.personalCredit.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
 @Data
-@Document(collection="personalCredit")
-public class PersonalCredit {
+public class PersonalCreditDto {
 	
-	@Id
-	private String id;
-	
-	@NotBlank
-	private String name;
 	
 	@NotBlank
 	private String creditAmount;
@@ -31,5 +24,9 @@ public class PersonalCredit {
 	
 	@NotBlank
 	private int cantShare;
+	
+	private PersonalDto holders;
 
+	
+	
 }
