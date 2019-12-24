@@ -1,5 +1,7 @@
 package com.springboot.personalCredit.util;
 
+import java.util.Date;
+
 import org.springframework.stereotype.Component;
 
 import com.springboot.personalCredit.document.PersonalCredit;
@@ -13,11 +15,19 @@ public class UtilConvert {
 
 		PersonalCredit personalCredit = new PersonalCredit();
 
-		personalCredit.setName("Credito-Personal");
+		personalCredit.setNameCredit("Credito-Personal");
+		personalCredit.setNumDoc(personalCreditDto.getNumDni());
 		personalCredit.setCreditAmount(personalCreditDto.getCreditAmount());
-		personalCredit.setDateCredit(personalCreditDto.getDateCredit());
 		personalCredit.setTea(personalCreditDto.getTea());
 		personalCredit.setCantShare(personalCreditDto.getCantShare());
+		personalCredit.setAmountShare((personalCreditDto.getCreditAmount()+
+				                      (personalCreditDto.getCreditAmount()*(personalCreditDto.getTea()/100)))
+				                      /personalCreditDto.getCantShare());
+		
+		personalCredit.setDateCreate(new Date());
+		personalCredit.setDateUpdate(new Date());
+		
+		
 		
 		return personalCredit;
 

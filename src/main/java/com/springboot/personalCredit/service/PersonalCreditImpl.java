@@ -1,5 +1,7 @@
 package com.springboot.personalCredit.service;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,13 +47,15 @@ public class PersonalCreditImpl implements PersonalCreditInterface {
 	@Override
 	public Mono<PersonalCredit> update(PersonalCredit personalCredit, String id) {
 		// TODO Auto-generated method stub
-	    return repo.findById(id).flatMap(p -> {
+	    return repo.findById(id).flatMap(credito -> {
 
-	    	p.setCreditAmount(personalCredit.getCreditAmount());
-	        p.setDateCredit(personalCredit.getDateCredit());
-	        p.setTea(personalCredit.getTea());
+	    
 	        
-	        return repo.save(p);
+	        credito.setTea(personalCredit.getTea());
+	        credito.setCantShare(personalCredit.getCantShare());
+	        credito.setDateUpdate(new Date());
+	        
+	        return repo.save(credito);
 
 	      });
 	}
@@ -63,18 +67,10 @@ public class PersonalCreditImpl implements PersonalCreditInterface {
 	}
 
 	@Override
-	public Mono<PersonalCreditDto> saveDto(PersonalCreditDto personalCreditDto) {
+	public Mono<PersonalCredit> saveDto(PersonalCreditDto personalCreditDto) {
 		
-		return save(convert.convertPersonalCredit(personalCreditDto)).flatMap(sa -> {
-
-			personalCreditDto.getHolders().setIdCuenta(sa.getId());
-			webCLient.save(personalCreditDto.getHolders()).block();
-			
-
-			return Mono.just(personalCreditDto);
-		});
-		
-		
+	return 	repo.save(convert.convertPersonalCredit(personalCreditDto));
+	
 	}
 
 

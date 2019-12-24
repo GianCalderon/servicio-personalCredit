@@ -11,21 +11,11 @@ import lombok.Data;
 
 @Data
 public class PersonalCreditDto {
-	
-	
-	@NotBlank
-	private String creditAmount;
-	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date dateCredit;
-	 
-	@NotBlank
+
+	private String numDni;
+	private Double creditAmount;
 	private Double tea;
-	
-	@NotBlank
 	private int cantShare;
-	
-	private PersonalDto holders;
 
 	
 	

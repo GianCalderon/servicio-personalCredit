@@ -52,14 +52,15 @@ public class PersonalCreditController {
 	  }
 
 	  @PostMapping
-	  public Mono<ResponseEntity<PersonalCredit>> save(@RequestBody  PersonalCredit  personalCredit) {
+		public Mono<ResponseEntity<PersonalCredit>> saveDto(@RequestBody PersonalCreditDto personalCreditDto) {
 
+			LOGGER.info(personalCreditDto.toString());
 
-	    return service.save(personalCredit).map(e -> ResponseEntity.created(URI.create("/api/personalCredit"))
-	                  .contentType(MediaType.APPLICATION_JSON).body(e));
+			return service.saveDto(personalCreditDto).map(s -> ResponseEntity.created(URI.create("/api/personalCredit"))
+					.contentType(MediaType.APPLICATION_JSON).body(s))
+					.defaultIfEmpty(new ResponseEntity<PersonalCredit>(HttpStatus.NOT_FOUND));
 
-	  }
-
+		}
 	  @PutMapping("/{id}")
 	  public Mono<ResponseEntity<PersonalCredit>> update(@RequestBody PersonalCredit personalCredit,
 	                    @PathVariable String id) {
@@ -80,15 +81,12 @@ public class PersonalCreditController {
 
 	  }
 	  
-	  @PostMapping("/saveDto")
-		public Mono<ResponseEntity<PersonalCreditDto>> saveDto(@RequestBody PersonalCreditDto personalCreditDto) {
+	  
+	  // Operaciones que consumen otros microservicios
+	  
 
-			LOGGER.info(personalCreditDto.toString());
+	  
 
-			return service.saveDto(personalCreditDto).map(s -> ResponseEntity.created(URI.create("/api/personalCredit"))
-					.contentType(MediaType.APPLICATION_JSON).body(s));
-
-		}
 	  
 
 }
