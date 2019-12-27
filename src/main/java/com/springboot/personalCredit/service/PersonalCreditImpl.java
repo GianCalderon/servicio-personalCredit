@@ -2,6 +2,8 @@ package com.springboot.personalCredit.service;
 
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,9 @@ import reactor.core.publisher.Mono;
 @Service
 public class PersonalCreditImpl implements PersonalCreditInterface {
 
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(PersonalCreditImpl.class);
+	
 	@Autowired
 	PersonalCreditRepo repo;
 	
@@ -24,7 +29,7 @@ public class PersonalCreditImpl implements PersonalCreditInterface {
 	UtilConvert convert;
 	
 	@Autowired
-	PersonalClient webCLient;
+	PersonalClient client;
 	
 	@Override
 	public Flux<PersonalCredit> findAll() {
@@ -67,9 +72,17 @@ public class PersonalCreditImpl implements PersonalCreditInterface {
 	}
 
 	@Override
-	public Mono<PersonalCredit> saveDto(PersonalCreditDto personalCreditDto) {
+	public Mono<PersonalCreditDto> saveDto(PersonalCreditDto personalCreditDto) {
 		
-	return 	repo.save(convert.convertPersonalCredit(personalCreditDto));
+		LOGGER.info("service:"+personalCreditDto.toString());
+
+		return repo.save(convert.convertPersonalCredit(personalCreditDto)).flatMap(sa -> {
+			client.save(personalCreditDto.getHeadline()).block();
+			
+			personalCreditDto.setIdPersonalCredit(sa.getId());
+			
+			return Mono.just(personalCreditDto);
+		});
 	
 	}
 

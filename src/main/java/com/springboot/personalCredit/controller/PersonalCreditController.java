@@ -52,13 +52,13 @@ public class PersonalCreditController {
 	  }
 
 	  @PostMapping
-		public Mono<ResponseEntity<PersonalCredit>> saveDto(@RequestBody PersonalCreditDto personalCreditDto) {
+		public Mono<ResponseEntity<PersonalCreditDto>> saveDto(@RequestBody PersonalCreditDto personalCreditDto) {
 
 			LOGGER.info(personalCreditDto.toString());
 
 			return service.saveDto(personalCreditDto).map(s -> ResponseEntity.created(URI.create("/api/personalCredit"))
 					.contentType(MediaType.APPLICATION_JSON).body(s))
-					.defaultIfEmpty(new ResponseEntity<PersonalCredit>(HttpStatus.NOT_FOUND));
+					.defaultIfEmpty(new ResponseEntity<PersonalCreditDto>(HttpStatus.NOT_FOUND));
 
 		}
 	  @PutMapping("/{id}")

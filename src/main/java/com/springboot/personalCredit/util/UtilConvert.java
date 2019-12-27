@@ -16,7 +16,7 @@ public class UtilConvert {
 		PersonalCredit personalCredit = new PersonalCredit();
 
 		personalCredit.setNameCredit("Credito-Personal");
-		personalCredit.setNumDoc(personalCreditDto.getNumDni());
+		personalCredit.setNumDoc(personalCreditDto.getHeadline().getNumDoc());
 		personalCredit.setCreditAmount(personalCreditDto.getCreditAmount());
 		personalCredit.setTea(personalCreditDto.getTea());
 		personalCredit.setCantShare(personalCreditDto.getCantShare());

@@ -12,10 +12,12 @@ import lombok.Data;
 @Data
 public class PersonalCreditDto {
 
-	private String numDni;
+	private String idPersonalCredit;
+	
 	private Double creditAmount;
 	private Double tea;
 	private int cantShare;
+	private PersonalDto headline;
 
 	
 	
